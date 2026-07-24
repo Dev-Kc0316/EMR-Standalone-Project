@@ -1,5 +1,6 @@
-function my(app) {
-  app.get('/users', (req, res) => {
-    // Logic to get users
-    res.send('Get all users');
-  });
+import express from 'express';
+import { Router } from 'express';
+
+Router.post( (req,res) => {
+
+});
