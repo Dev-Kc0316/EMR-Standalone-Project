@@ -1,13 +1,11 @@
-import { defaultValueSchemable } from "sequelize/lib/utils";
 import sequelize from "../config/database.js";
-import { DataTypes } from "sequelize";
+import { DataTypes, UUIDV4 } from "sequelize";
 
-const Consultation = sequelize.define('Consultation',{
+const Lab_orders = sequelize.define('Lab_orders',{
     id:{
         type:DataTypes.UUID,
         primaryKey:true,
         allowNull:false,
-        defaultValue:DataTypes.UUIDV4
     },
     patient_id:{
         type:DataTypes.UUID,
@@ -17,19 +15,32 @@ const Consultation = sequelize.define('Consultation',{
         type:DataTypes.UUID,
         allowNull:false,
     },
+    clinical_note_id:{
+        type:DataTypes.UUID,
+        allowNull:false,
+    },
+    test_name:{
+        type:DataTypes.STRING(50),
+        allowNull:false,
+    },
     priority:{
         type:DataTypes.STRING(50),
         allowNull:false,
-        defaultValue:'normal,'
+        defaultValue:'medium',
     },
     status:{
         type:DataTypes.STRING(50),
         allowNull:false,
-        defaultValue:'waiting',
+        defaultValue:'in progress'
+    },
+    result:{
+        type:DataTypes.TEXT,
+        allowNull:false,
+        defaultValue:'\' in progress\'',
     },
     comment:{
         type:DataTypes.TEXT,
-        allowNull:false,
+        defaultValue:null,
     },
     created_at:{
         type:DataTypes.DATE,
@@ -63,10 +74,13 @@ const Consultation = sequelize.define('Consultation',{
         type:DataTypes.UUID,
         defaultvalue:null,
     },
-},   
-    {
-        tableName:'consultation',
-        timestamps:true,
-})
 
-export default Consultation;
+
+},
+    {
+        tableName: 'lab_orders',
+        timestamps: true,
+    }
+)
+
+export default Lab_orders;

@@ -1,18 +1,22 @@
 import { Sequelize } from "sequelize";
+import  dotenv from "dotenv";
 
-// storing database in variables
-const db_Name = "emr_db"
-const db_Username = "username"
-const db_Password = "password"
+dotenv.config();
+
+
+export const sequelize = new Sequelize(
+    process.env.DB_NAME,
+    process.env.DB_USERNAME,
+    process.env.PASSWORD,
+    {
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        dialect:'mysql',
+    }
+);
 
 //connecting to database
-const sequelize = new Sequelize(db_Name,db_Username,db_Password, {
-    host: '127.0.0.1', 
-    dialect: 'mysql' // the dialect the database will use
-});
-
-//Function to connect to MySQL
-export const connectMySQL = async () => {
+export async function connectDB(){
     try{
         await sequelize.authenticate();
         console.log("Sucessfully connected to database"); //test connection
