@@ -45,7 +45,7 @@ const User = sequelize.define(
     },
     isPasswordChanged: {
       type: DataTypes.BOOLEAN,
-      defaultValue: true,
+      defaultValue: false,
     },
     resetPasswordToken: {
       type: DataTypes.STRING,
@@ -56,14 +56,6 @@ const User = sequelize.define(
       allowNull: true,
     },
     lastLogin: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    isDeleted: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
-    },
-    deleteAt: {
       type: DataTypes.DATE,
       allowNull: true,
     },
@@ -84,6 +76,7 @@ const User = sequelize.define(
       },
     },
     tableName: "users",
+    paranoid: true,
     timestamps: true,
     underscored: true,
   },
