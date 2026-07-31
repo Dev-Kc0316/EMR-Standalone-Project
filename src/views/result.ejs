@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OPEN FDA RESULT PAGE</title>
+    <style>
+        body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: #f8fafc;
+  color: #1e293b;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 700px;
+  margin: 40px auto;
+  background: white;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.search-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+input[type="text"] {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+button {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.alert-error {
+  background-color: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+/* Severe Warning Highlight */
+.warning-box {
+  background-color: #fff1f2;
+  border-left: 6px solid #e11d48;
+  padding: 16px 20px;
+  border-radius: 4px;
+  margin: 20px 0;
+  color: #881337;
+}
+
+.warning-box h2 {
+  margin-top: 0;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+}
+
+.info-card {
+  border-top: 1px solid #e2e8f0;
+  padding-top: 16px;
+  margin-top: 20px;
+}
+
+.back-link {
+  color: #2563eb;
+  text-decoration: none;
+  font-weight: 500;
+}
+    </style>
+  </head>
+  <body>
+  <main class="container">
+    <a href="http://localhost:5000/api/auth/open-fda/result" class="back-link">&larr; Back to Search</a>
+    
+    <header class="drug-header">
+      <h1><%= drug.brandName %></h1>
+      <p class="subtitle"><strong>Generic Name:</strong> <%= drug.genericName %></p>
+      <p class="subtitle"><strong>Manufacturer:</strong> <%= drug.manufacturer %></p>
+    </header>
+
+    <% if (drug.boxedWarning) { %>
+      <!-- Black Box Warning Highlight -->
+      <section class="warning-box">
+        <h2>&#9888;&#65039; FDA Black Box Warning</h2>
+        <p><%= drug.boxedWarning %></p>
+      </section>
+    <% } %>
+
+    <section class="info-card">
+      <h3>Therapeutic Purpose & Indications</h3>
+      <p><%= drug.purpose %></p>
+    </section>
+
+    <section class="info-card">
+      <h3>General Warnings</h3>
+      <p><%= drug.warnings %></p>
+    </section>
+  </main>
+</body>
+</html>

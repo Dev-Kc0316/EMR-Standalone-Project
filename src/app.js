@@ -6,6 +6,7 @@ import errorHandler, {
   serverErrorHandler,
 } from "./middlewares/errorMiddleware.js";
 import userRouter from "./routes/userRoutes.js";
+import openFdaRouter from "./routes/openFdaRoute.js";
 
 import { connectDB } from "./config/database.js";
 
@@ -25,6 +26,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/auth", userRouter);
+app.use("/api/auth", openFdaRouter);
 
 app.use(errorHandler);
 
