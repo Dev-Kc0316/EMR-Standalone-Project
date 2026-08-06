@@ -17,6 +17,10 @@ const Consultation = sequelize.define('Consultation',{
         type:DataTypes.UUID,
         allowNull:false,
     },
+    chief_complaint:{
+        type: DataTypes.TEXT,
+        allowNull:false,
+    },
     priority:{
         type:DataTypes.STRING(50),
         allowNull:false,
@@ -25,15 +29,13 @@ const Consultation = sequelize.define('Consultation',{
     status:{
         type:DataTypes.STRING(50),
         allowNull:false,
-        defaultValue:'waiting',
     },
     comment:{
         type:DataTypes.TEXT,
-        allowNull:false,
+        allowNull:true,
     },
     created_at:{
         type:DataTypes.DATE,
-        allowNull:false,
         defaultValue:DataTypes.NOW,
     },
     created_by:{

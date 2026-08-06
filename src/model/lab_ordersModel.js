@@ -42,6 +42,17 @@ const Lab_orders = sequelize.define('Lab_orders',{
         type:DataTypes.TEXT,
         defaultValue:null,
     },
+    ordered_by:{
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue:'nurse'
+    },
+    ordered_at: {
+        type: DataTypes.DATE,
+        allowNull: false, 
+        defaultValue: DataTypes.NOW
+
+    },
     created_at:{
         type:DataTypes.DATE,
         allowNull:false,
