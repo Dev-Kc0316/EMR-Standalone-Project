@@ -1,54 +1,48 @@
-import express from "express";
-import dotenv from "dotenv";
-import path from "path";
-import { fileURLToPath } from "url";
-import errorHandler, {
-  serverErrorHandler,
-} from "./middlewares/errorMiddleware.js";
-import userRouter from "./routes/userRoutes.js";
-import openFdaRouter from "./routes/openFdaRoute.js";
+import express from 'express';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 
-import { connectDB } from "./config/database.js";
+import consultationRouter from './routes/consultationRoutes.js';
+import vitalsRouter from './routes/vitalsRoutes.js';
+import labOrdersrouter from './routes/lab_ordersRoutes.js';
+import { errorHandler } from './middlewares/errorHandlers.js';
 
-dotenv.config();
-const __filename = import.meta.filename;
-const __dirname = import.meta.dirname;
-const app = express();
+const app = express()
 
-app.set("view engine", "ejs");
-app.set("views", path.join(__dirname, "views"));
-
+//MIDDLEWARE
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true}));
+app.use(cookieParser(process.env.COOKIE_SECRET || 'emr_cookie_secret'));
+app.use('/uploads', express.static('uploads'));
 
-app.get("/", (req, res) => {
-  res.send("Welcome to our EMR Project");
+app.use(
+    session({
+        secret: process.env.SESSION_SECRET || 'emr_secret_key',
+        resave: false,
+        saveUninitialized:false,
+        cookie:{
+            httpOnly:true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 1000 * 60 * 60 * 8
+        }
+    })
+);
+
+//ROUTES
+app.use('/api/consultation', consultationRouter);
+app.use('/api/labOrders', labOrdersrouter);
+app.use('/api/vitals', vitalsRouter);
+
+app.use((req, res, next) => {
+    const error = new Error('Endpoint not found');
+    error.statusCode = 404;
+    next(error); // Passes error straight to errorHandler
 });
 
-app.use("/api/auth", userRouter);
-app.use("/api/auth", openFdaRouter);
-
+// Global Error Handler (MUST BE LAST)
 app.use(errorHandler);
 
-//
-app.use((req, res) => {
-  res.status(404).json({
-    status: "failed",
-    message: "Route not found",
-  });
-});
+export default app;
 
-const startServer = async () => {
-  try {
-    await connectDB();
-    const PORT = process.env.PORT || 5000;
 
-    app.listen(PORT, () => {
-      console.log(`Server running on port:http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    serverErrorHandler(error);
-  }
-};
 
-startServer();
